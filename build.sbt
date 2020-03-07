@@ -9,14 +9,20 @@ libraryDependencies ++= {
   val akkaHttp = "10.1.11"
 
   Seq(
-    "com.typesafe.akka" %% "akka-actor"      % akkaVersion,
-    "com.typesafe.akka" %% "akka-http-core"  % akkaHttp,
-    "com.typesafe.akka" %% "akka-http"       % akkaHttp,
-    "com.typesafe.play" %% "play-ws-standalone-json"       % "2.1.2",
-    "com.typesafe.akka" %% "akka-slf4j"      % akkaVersion,
-    "ch.qos.logback"    %  "logback-classic" % "1.2.3",
-    "de.heikoseeberger" %% "akka-http-play-json"   % "1.31.0",
-    "com.typesafe.akka" %% "akka-testkit"    % akkaVersion   % "test",
-    "org.scalatest"     %% "scalatest"       % "3.1.1"       % "test"
+    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+    "com.typesafe.akka" %% "akka-http-core" % akkaHttp,
+    "com.typesafe.akka" %% "akka-http" % akkaHttp,
+    "com.typesafe.play" %% "play-ws-standalone-json" % "2.1.2",
+    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
+    "ch.qos.logback" % "logback-classic" % "1.2.3",
+    "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0",
+    "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test",
+    "org.scalactic" %% "scalactic" % "3.1.1",
+    "org.scalatest" %% "scalatest" % "3.1.1" % "test",
+    "com.vladsch.flexmark" % "flexmark-all" % "0.35.10" % "test"
   )
 }
+
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-reports")
+
