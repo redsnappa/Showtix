@@ -1,6 +1,11 @@
 package com.showtix.messages
 
+import akka.actor.Props
+import com.showtix.actors.Coachella
+
 object Coachella {
+
+  def props() = Props(new Coachella())
 
   case class CreateEvent(name: String, tickets: Int) // message to create an event
   case class GetEvent(name: String) // message to get an event
@@ -14,5 +19,6 @@ object Coachella {
   sealed trait EventResponse // message response to create an event
   case class EventCreated(event: Event) extends EventResponse // message to indicate the event was created
   case object EventExists extends EventResponse // message to indicate that the event already exists
+  case object EventNotExists extends EventResponse // message to indicate that the event does not exist
 
 }
