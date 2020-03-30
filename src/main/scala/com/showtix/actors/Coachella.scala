@@ -43,12 +43,12 @@ class Coachella(implicit timeout: Timeout = Timeout(1 seconds)) extends Actor wi
       childSellerNameMap.get(eventName).fold(noEventExists())(buy)
     case GetEvent(name) =>
       def getEventFromSeller(seller: ActorRef): Unit = seller.forward(TicketSeller.GetEvent)
-      childSellerNameMap.get(name).fold({sender() ! EventNotExists})(getEventFromSeller)
+      childSellerNameMap.get(name).fold({sender() ! None})(getEventFromSeller)
     case GetEvents =>
-      val fEvents: Iterable[Future[Event]] = childSellerNameMap.values.map { childRef =>
-        (childRef ? TicketSeller.GetEvent).mapTo[Event]
+      val fEvents: Iterable[Future[Option[Event]] ]= childSellerNameMap.values.map { childRef =>
+        (childRef ? TicketSeller.GetEvent).mapTo[Option[Event]]
       }
-      val events: Future[Events] = Future.sequence(fEvents).map { events:Iterable[Event] => Events(Vector.from(events)) }
+      val events: Future[Events] = Future.sequence(fEvents).map { events:Iterable[Option[Event]] => Events(Vector.from(events.flatten)) }
       pipe(events) to sender()
 
     case CancelEvent(name) =>

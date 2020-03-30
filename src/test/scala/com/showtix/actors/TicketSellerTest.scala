@@ -28,7 +28,7 @@ class TicketSellerTest extends TestKit(ActorSystem("TicketSellerTestActorSystem"
 
       ticketSeller ! GetEvent
 
-      expectMsg(Coachella.Event(eventName, 0))
+      expectMsg(Some(Coachella.Event(eventName, 0)))
     }
 
     "add new tickets for it's event" in {
@@ -38,7 +38,7 @@ class TicketSellerTest extends TestKit(ActorSystem("TicketSellerTestActorSystem"
       ticketSeller ! Add(newTickets)
       ticketSeller ! GetEvent
 
-      expectMsg(Coachella.Event(eventName, newTickets.size))
+      expectMsg(Some(Coachella.Event(eventName, newTickets.size)))
     }
 
     "sell tickets if they are available" in {
@@ -52,7 +52,7 @@ class TicketSellerTest extends TestKit(ActorSystem("TicketSellerTestActorSystem"
 
       ticketSeller ! GetEvent
 
-      expectMsg(Coachella.Event(eventName, 1))
+      expectMsg(Some(Coachella.Event(eventName, 1)))
     }
 
     "return no tickets if there are none to sell" in {
@@ -84,7 +84,7 @@ class TicketSellerTest extends TestKit(ActorSystem("TicketSellerTestActorSystem"
 
       ticketSeller ! Cancel
 
-      expectMsg(Coachella.Event(eventName, tickets.size))
+      expectMsg(Some(Coachella.Event(eventName, tickets.size)))
 
       probe.expectTerminated(ticketSeller)
 

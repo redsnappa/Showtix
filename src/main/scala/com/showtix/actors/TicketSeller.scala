@@ -10,7 +10,7 @@ class TicketSeller(private val event: String) extends Actor {
   override def receive: Receive = ticketHandler()
 
   def ticketHandler(tickets: Vector[Ticket] = Vector.empty[Ticket] ): Receive = {
-    case GetEvent => sender() ! Coachella.Event(event, tickets.size)
+    case GetEvent => sender() ! Some(Coachella.Event(event, tickets.size))
     case Add(newTickets: Vector[Ticket]) =>
        context.become(ticketHandler(tickets ++ newTickets))
     case Buy(amount: Int) =>
@@ -20,7 +20,7 @@ class TicketSeller(private val event: String) extends Actor {
         sender() ! Tickets(event, tickets.take(amount))
         context.become(ticketHandler(tickets.drop(amount)))
     case Cancel =>
-      sender() ! Coachella.Event(event, tickets.size)
+      sender() ! Some(Coachella.Event(event, tickets.size))
       context.self ! PoisonPill
   }
 }

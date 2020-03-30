@@ -73,7 +73,7 @@ class CoachellaTest extends TestKit(ActorSystem("CoachellaTestActorSystem"))
 
       coachella ! GetEvent(eventName)
 
-      expectMsg(EventNotExists)
+      expectMsg(None)
 
     }
 
@@ -87,7 +87,7 @@ class CoachellaTest extends TestKit(ActorSystem("CoachellaTestActorSystem"))
 
       coachella ! GetEvent(eventName)
 
-      expectMsg(Event(eventName, ticketsAllocated))
+      expectMsg(Some(Event(eventName, ticketsAllocated)))
 
     }
 
@@ -122,7 +122,7 @@ class CoachellaTest extends TestKit(ActorSystem("CoachellaTestActorSystem"))
       expectMsg(EventCreated(Event(glasto, ticketsAllocated)))
 
       coachella ! CancelEvent(glasto)
-      expectMsg(Event(glasto, ticketsAllocated))
+      expectMsg(Some(Event(glasto, ticketsAllocated)))
 
       coachella ! GetEvents
 
